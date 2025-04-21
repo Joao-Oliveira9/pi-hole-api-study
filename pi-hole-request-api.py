@@ -1,5 +1,5 @@
 import requests
-
+payload = {"password": "CI3ZjCva"}
 """ url = "https://192.168.15.2/api/auth"
 payload = {"password": "CI3ZjCva"}
 
@@ -51,7 +51,6 @@ def add_domain_blocklist(sid):
 
 def queryRegister(sid):
     """ "https://pi.hole:443/api/queries?client_ip=192.168.15.5" """
-
     url = "https://192.168.15.2/api/queries?client_ip=192.168.15.5&sid="+ sid
     response = requests.request("POST", url, json=payload, verify=False)
     response =  response.json()
@@ -76,14 +75,22 @@ def create_session(password,pihole_address):
 
 
 def delete_session(sid,pihole_address):
-    url = "https://" + pihole_address + "/api/auth/session" + sid
+    url = "https://" + pihole_address + "/api/auth?sid=" + sid
     print(url)
-    response= requests.request("Delete",url,verify=False)
-    response = response.json()
+    response = requests.request("Delete",url,verify=False)
+    """ response = response.json() """
     print(response)
 
 
 password = "CI3ZjCva"
 pihole_address = "192.168.15.2"
-sid = create_session(password,pihole_address)
-print(sid)
+
+""" criando uma sessao """
+sid = create_session(password,pihole_address) 
+print(sid) 
+
+delete_session(sid,pihole_address)
+
+""" queryRegister("opIVV0VHU7paj4YRDFXboA=") """
+
+""" http://192.168.0.22/api/queries?client_ip=192.168.0.8&length=1 """
