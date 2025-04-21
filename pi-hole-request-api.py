@@ -1,6 +1,6 @@
 import requests
 
-url = "https://192.168.15.2/api/auth"
+""" url = "https://192.168.15.2/api/auth"
 payload = {"password": "CI3ZjCva"}
 
 response = requests.request("POST", url, json=payload, verify=False)
@@ -18,7 +18,7 @@ def status_blockinlist():
 
     response = requests.request("GET",url,verify=False)
     print(response.json())
-
+ """
 """ teste(sid) """
 
 """ status_blockinlist()  """
@@ -58,3 +58,32 @@ def queryRegister(sid):
     print(response)
 
 """ queryRegister(sid) """
+
+
+""" geração da sid e exclusao da sid """
+
+""" Cria uma sessao e envia """
+def create_session(password,pihole_address):
+    url = "https://" + pihole_address + "/api/auth"
+    print(url)
+    payload = {"password": password}
+    response = requests.request("Post",url,json=payload,verify=False)
+    response = response.json()
+    print(response)
+    sid = response["session"]["sid"]
+    print(sid)
+    return sid
+
+
+def delete_session(sid,pihole_address):
+    url = "https://" + pihole_address + "/api/auth/session" + sid
+    print(url)
+    response= requests.request("Delete",url,verify=False)
+    response = response.json()
+    print(response)
+
+
+password = "CI3ZjCva"
+pihole_address = "192.168.15.2"
+sid = create_session(password,pihole_address)
+print(sid)
