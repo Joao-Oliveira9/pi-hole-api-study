@@ -1,29 +1,5 @@
 import requests
 payload = {"password": "CI3ZjCva"}
-""" url = "https://192.168.15.2/api/auth"
-payload = {"password": "CI3ZjCva"}
-
-response = requests.request("POST", url, json=payload, verify=False)
-
-response =  response.json()
-print(response)
-
-sid = response["session"]["sid"]
-print(sid)
-
-def status_blockinlist():
-    sid = "9YrOaVbC9kEc8qzePs3y+g="
-    url = "https://192.168.15.2/api/dns/blocking?sid=" + sid
-    print(url)
-
-    response = requests.request("GET",url,verify=False)
-    print(response.json())
- """
-""" teste(sid) """
-
-""" status_blockinlist()  """
-
-""" DOMIAN MANAGEMENT /domains/{type}/{kind}/{domain} """
 
 def add_domain_blocklist(sid):
     payload= {
@@ -60,6 +36,8 @@ def queryRegister(sid):
 password = "CI3ZjCva"
 pihole_address = "192.168.15.2"
 
+domain_block = "maisesports.com.br"
+
 """ geração da sid e exclusao da sid """
 
 """ Cria uma sessao e envia """
@@ -82,27 +60,54 @@ def delete_session(sid,pihole_address):
     """ response = response.json() """
     """ print(response) """
 
-def queryRegister(pihole_address):
+def queryRegister(pihole_address,domain,length):
     """ "https://pi.hole:443/api/queries?client_ip=192.168.15.5" """
     sid = create_session(password,pihole_address)
-    url = "https://" + pihole_address + "/api/queries?client_ip=192.168.15.5&domain=x.com&length=4&sid="+ sid
+    """ url = "https://" + pihole_address + "/api/queries?client_ip=192.168.15.5&domain=x.com&length=4&sid="+ sid """
+
+    url = "https://" + pihole_address + "/api/queries?client_ip=192.168.15.5&domain="+ domain + "&length="+ length +"&sid="+ sid
     response = requests.request("GET", url, json=payload, verify=False)
     """ response =  response.json() """
     print(response.json())
     delete_session(sid,pihole_address)
 """ http://192.168.0.22/api/queries?client_ip=192.168.0.8&length=1 """
 
-""" password = "CI3ZjCva"
-pihole_address = "192.168.15.2" """
-
-queryRegister(pihole_address)
-""" criando uma sessao """
-""" sid = create_session(password,pihole_address)  """
-""" print(sid)  """
-
-""" delete_session(sid,pihole_address) """
 
 
-""" queryRegister("opIVV0VHU7paj4YRDFXboA=") """
+def add_domain_blocklist(domain,pihole_address):
+    sid = create_session(password,pihole_address)
+    payload= {
+    "domain": domain,
+    "comment": "teste",
+    "groups": [
+        0
+    ],
+    "enabled": True
+    }
 
-""" http://192.168.0.22/api/queries?client_ip=192.168.0.8&length=1 """
+    """ sid = "DbyYZZHQhLL0RIc5yIx97A=" """
+    url = "https://" + pihole_address + "/api/domains/deny/exact?sid=" + sid
+    """ https://pi.hole:443/api/domains/deny/exact """
+
+    response = requests.request("POST", url, json=payload, verify=False)
+
+    response =  response.json()
+    print(response)
+    delete_session(sid,pihole_address)
+    
+
+def create_group(pihole_address,groupname):
+    payload = {    
+        "name" : groupname
+    }
+    sid = create_session(password,pihole_address)
+    url = "https://" + pihole_address + "/api/groups?sid=" + sid
+    response = requests.request("POST",url,json=payload,verify=False)
+    response = response.json()
+    print(response)
+    delete_session(sid,pihole_address)
+
+
+create_group(pihole_address,"testando-api")
+queryRegister(pihole_address,"x.com","4")
+""" add_domain_blocklist(domain_block,pihole_address) """
