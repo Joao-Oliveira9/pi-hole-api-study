@@ -96,9 +96,9 @@ def add_domain_blocklist(domain,pihole_address):
     delete_session(sid,pihole_address)
     
 
-def create_group(pihole_address,groupname):
+def create_group(pihole_address,group_name):
     payload = {    
-        "name" : groupname
+        "name" : group_name
     }
     sid = create_session(password,pihole_address)
     url = "https://" + pihole_address + "/api/groups?sid=" + sid
@@ -107,7 +107,26 @@ def create_group(pihole_address,groupname):
     print(response)
     delete_session(sid,pihole_address)
 
+def remove_group(pihole_address,group_name):
+    """  payload = {    
+        "name" : group_name
+    } """
 
-create_group(pihole_address,"testando-api")
-queryRegister(pihole_address,"x.com","4")
+    sid = create_session(password,pihole_address)
+    """ print(sid) """
+    """ url = "https://" + pihole_address + "/api/groups?sid=" + sid """
+    url = "https://" + pihole_address + "/api/groups/" + group_name + "?sid=" + sid
+    print(url)
+    """ url = "https://" + pihole_address + "/api/groups/name" + group_name + "?sid=" + sid """
+    """ response = requests.request("DELETE",url,json=payload,verify=False) """
+    response = requests.request("DELETE",url,verify=False)
+    """ response = response.json() """
+    print(response)
+    delete_session(sid,pihole_address)
+
+
+""" create_group(pihole_address,"testando-api") """
+remove_group(pihole_address,"teste2")
+""" queryRegister(pihole_address,"x.com","4") """
 """ add_domain_blocklist(domain_block,pihole_address) """
+
