@@ -24,6 +24,13 @@ def post_domain():
     message = f'Domínio {domain_name} adicionado a lista de bloqueios do grupo {group_name}' 
     return jsonify(message),200
 
+@app.route("/create_group",methods=['POST'])
+def post_group():
+    data = request.get_json()
+    group_name = data['group-name']
+    pihole.create_group(group_name)
+    message = f'Grupo {group_name} criado com sucesso'
+    return jsonify(message)
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0',port=8000)
