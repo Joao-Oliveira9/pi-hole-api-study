@@ -54,7 +54,7 @@ class RequisicoesPihole:
         url = f"https://{self.pihole_address}/api/groups/{group_name}?sid={sid}"
         print(url)
         response = requests.delete(url, verify=False)
-        print(response)
+        """ print(response.json()) """
         self.delete_session(sid)
 
     def create_client(self, client_name, group_id):
