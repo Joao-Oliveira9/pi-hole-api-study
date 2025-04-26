@@ -32,5 +32,17 @@ def post_group():
     message = f'Grupo {group_name} criado com sucesso'
     return jsonify(message)
 
+""" O cliente deve pertencer a um grupo nesse endpoint """
+@app.route("/add_cliente",methods=['POST'])
+def post_client_grupo():
+    data = request.get_json()
+    client_address = data['client_address']
+    group_name = data['group_name']
+
+    pihole.insert_client_with_group(client_address,group_name)
+
+    message = f'Cliente {client_address} foi inserido no grupo {group_name} com sucesso'
+    return jsonify(message)
+
 if __name__ == "__main__":    
     app.run(host='0.0.0.0',port=8000)
