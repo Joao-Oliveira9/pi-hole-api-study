@@ -129,22 +129,36 @@ def get_id_group(pihole_address,password,group_name)->str:
     
 
     group_id = response['groups'][0]['id']
+    delete_session(sid,pihole_address)
     
     return group_id
 
-    delete_session(sid,pihole_address)
+    
 
 def insert_client_with_group(client_name,group_name,pihole_address,password):
     group_id = get_id_group(pihole_address,password,group_name)
     create_client(pihole_address,password,client_name,group_id)
 
+def delete_client(pihole_address,client_address):
+    
+    sid = create_session(password,pihole_address)
+   
+    url = "https://" + pihole_address + "/api/clients/" + client_address + "?sid=" + sid
+    
+ 
+    response = requests.request("DELETE",url,verify=False)
+    
+    
+    
+    delete_session(sid,pihole_address)
 
 """ create_group(pihole_address,"testando-api") """
 """ remove_group(pihole_address,"teste2") """
 """ queryRegister(pihole_address,"x.com","4") """
-add_domain_blocklist("facebook.com",pihole_address,"teste")
+""" add_domain_blocklist("facebook.com",pihole_address,"teste") """
 """ create_client(pihole_address,password,"192.168.15.5") """
 """ group_id = get_id_grupo(pihole_address,password,"teste")
 print(group_id) """
-
 """ insert_client_with_group("192.168.15.5","teste",pihole_address,password) """
+
+delete_client(pihole_address,"192.168.15.5")
