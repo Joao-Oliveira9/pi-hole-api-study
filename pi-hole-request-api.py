@@ -125,10 +125,11 @@ def remove_group(pihole_address,group_name):
 
 
 """ /** *! funcao inicialmente usara o ip mas posteriormente sera trocada pelo arpscan usando mac address """
-def create_client(pihole_address,password,client_name):
+def create_client(pihole_address,password,client_name,group_id):
     sid = create_session(password,pihole_address)
     payload = {
-        "client" : client_name
+        "client" : client_name,
+        "groups" : [group_id]
     }
 
     url = "https://" + pihole_address + "/api/clients?sid=" + sid
@@ -137,9 +138,31 @@ def create_client(pihole_address,password,client_name):
 
     delete_session(sid,pihole_address)
 
+def get_id_group(pihole_address,password,group_name)->str:
+    sid = create_session(password,pihole_address)
+
+    url = "https://" + pihole_address + "/api/groups/" + group_name + "?sid=" + sid
+    response = requests.request("GET",url,verify=False)
+    response  = response.json()
+    
+
+    group_id = response['groups'][0]['id']
+    
+    return group_id
+
+    delete_session(sid,pihole_address)
+
+def insert_client_with_group(client_name,group_name,pihole_address,password):
+    group_id = get_id_group(pihole_address,password,group_name)
+    create_client(pihole_address,password,client_name,group_id)
+
 
 """ create_group(pihole_address,"testando-api") """
 """ remove_group(pihole_address,"teste2") """
 """ queryRegister(pihole_address,"x.com","4") """
 """ add_domain_blocklist(domain_block,pihole_address) """
-create_client(pihole_address,password,"192.168.15.5")
+""" create_client(pihole_address,password,"192.168.15.5") """
+""" group_id = get_id_grupo(pihole_address,password,"teste")
+print(group_id) """
+
+insert_client_with_group("192.168.15.5","teste",pihole_address,password)
