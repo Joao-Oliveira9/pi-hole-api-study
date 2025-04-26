@@ -2,26 +2,7 @@ import requests
 
 payload = {"password": "CI3ZjCva"}
 
-def add_domain_blocklist(sid):
-    payload= {
-    "domain": "maisesports.com.br",
-    "comment": "teste",
-    "groups": [
-        0
-    ],
-    "enabled": True
-    }
 
-    """ sid = "DbyYZZHQhLL0RIc5yIx97A=" """
-    url = "https://192.168.15.2/api/domains/deny/exact?sid=" + sid
-    """ https://pi.hole:443/api/domains/deny/exact """
-
-    response = requests.request("POST", url, json=payload, verify=False)
-
-    response =  response.json()
-    print(response)
-    
-    
 """ add_domain_blocklist(sid) """
 
 def queryRegister(sid):
@@ -72,14 +53,15 @@ def queryRegister(pihole_address,domain,length):
 """ http://192.168.0.22/api/queries?client_ip=192.168.0.8&length=1 """
 
 
-
-def add_domain_blocklist(domain,pihole_address):
+""" adicionar o grupo """
+def add_domain_blocklist(domain,pihole_address,group_name):
+    id_group = get_id_group(pihole_address,password,group_name)
     sid = create_session(password,pihole_address)
     payload= {
     "domain": domain,
     "comment": "teste",
     "groups": [
-        0
+        id_group
     ],
     "enabled": True
     }
@@ -160,9 +142,9 @@ def insert_client_with_group(client_name,group_name,pihole_address,password):
 """ create_group(pihole_address,"testando-api") """
 """ remove_group(pihole_address,"teste2") """
 """ queryRegister(pihole_address,"x.com","4") """
-""" add_domain_blocklist(domain_block,pihole_address) """
+add_domain_blocklist("facebook.com",pihole_address,"teste")
 """ create_client(pihole_address,password,"192.168.15.5") """
 """ group_id = get_id_grupo(pihole_address,password,"teste")
 print(group_id) """
 
-insert_client_with_group("192.168.15.5","teste",pihole_address,password)
+""" insert_client_with_group("192.168.15.5","teste",pihole_address,password) """
