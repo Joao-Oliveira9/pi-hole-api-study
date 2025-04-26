@@ -1,4 +1,5 @@
 import requests
+
 payload = {"password": "CI3ZjCva"}
 
 def add_domain_blocklist(sid):
@@ -22,8 +23,6 @@ def add_domain_blocklist(sid):
     
     
 """ add_domain_blocklist(sid) """
-
-
 
 def queryRegister(sid):
     """ "https://pi.hole:443/api/queries?client_ip=192.168.15.5" """
@@ -125,8 +124,22 @@ def remove_group(pihole_address,group_name):
     delete_session(sid,pihole_address)
 
 
+""" /** *! funcao inicialmente usara o ip mas posteriormente sera trocada pelo arpscan usando mac address """
+def create_client(pihole_address,password,client_name):
+    sid = create_session(password,pihole_address)
+    payload = {
+        "client" : client_name
+    }
+
+    url = "https://" + pihole_address + "/api/clients?sid=" + sid
+    response = requests.request("POST",url,json=payload,verify=False)
+    print(response.json())
+
+    delete_session(sid,pihole_address)
+
+
 """ create_group(pihole_address,"testando-api") """
-remove_group(pihole_address,"teste2")
+""" remove_group(pihole_address,"teste2") """
 """ queryRegister(pihole_address,"x.com","4") """
 """ add_domain_blocklist(domain_block,pihole_address) """
-
+create_client(pihole_address,password,"192.168.15.5")
