@@ -1,5 +1,6 @@
 from pi_hole_request_api import RequisicoesPihole
-from flask import Flask
+from flask import Flask,request
+import requests
 
 pihole = RequisicoesPihole(password="CI3ZjCva", pihole_address="192.168.15.2")
 
@@ -9,13 +10,23 @@ pihole = RequisicoesPihole(password="CI3ZjCva", pihole_address="192.168.15.2")
 print(id) """
 app = Flask(__name__)
 
-@app.route("/")
+""" @app.route("/")
 def hello_world():
         print('passei aqui')
         pihole.remove_group('tee')
-        return 'hello word'
+        return 'hello word' """
 
+@app.route("/get_registro", methods=['GET'])
+def get_registro():
+   data = request.get_json() 
+   domain_name = data['domain-name']
+   length = data['length']
+   """ print(data) """
+   """ print(length) """
+   response = pihole.query_register(domain_name,length)
 
+   return response
+  
 
 
 if __name__ == "__main__":    

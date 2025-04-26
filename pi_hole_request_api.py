@@ -21,11 +21,13 @@ class RequisicoesPihole:
         requests.delete(url, verify=False)
 
     def query_register(self, domain, length):
+        """ print('passei aqui') """
         sid = self.create_session()
         url = f"https://{self.pihole_address}/api/queries?client_ip=192.168.15.5&domain={domain}&length={length}&sid={sid}"
         response = requests.get(url, verify=False)
-        print(response.json())
+        """ print(response.json()) """
         self.delete_session(sid)
+        return response.json()
 
     def add_domain_blocklist(self, domain, group_name):
         id_group = self.get_id_group(group_name)
