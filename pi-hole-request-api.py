@@ -1,4 +1,5 @@
 import requests
+from flask import Flask
 
 payload = {"password": "CI3ZjCva"}
 
@@ -161,4 +162,4 @@ def delete_client(pihole_address,client_address):
 print(group_id) """
 """ insert_client_with_group("192.168.15.5","teste",pihole_address,password) """
 
-delete_client(pihole_address,"192.168.15.5")
+""" delete_client(pihole_address,"192.168.15.5") """
