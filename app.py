@@ -22,7 +22,7 @@ def post_domain():
     pihole.add_domain_blocklist(domain_name,group_name)
 
     message = f'Domínio {domain_name} adicionado a lista de bloqueios do grupo {group_name}' 
-    return jsonify(message),200
+    return jsonify(message),
 
 @app.route("/create_group",methods=['POST'])
 def post_group():
@@ -33,7 +33,7 @@ def post_group():
     return jsonify(message)
 
 """ O cliente deve pertencer a um grupo nesse endpoint """
-@app.route("/add_cliente",methods=['POST'])
+@app.route("/add_client",methods=['POST'])
 def post_client_grupo():
     data = request.get_json()
     client_address = data['client_address']
@@ -42,6 +42,14 @@ def post_client_grupo():
     pihole.insert_client_with_group(client_address,group_name)
 
     message = f'Cliente {client_address} foi inserido no grupo {group_name} com sucesso'
+    return jsonify(message)
+
+@app.route("/delete_client",methods=['DELETE'])
+def delete_client():
+    data = request.get_json()
+    client_address = data['client_address']
+    pihole.delete_client(client_address)
+    message = f'Cliente  {client_address} foi removido'
     return jsonify(message)
 
 if __name__ == "__main__":    
